@@ -1,0 +1,43 @@
+# 環境・秘密情報（絶対に Git に含めない）
+.env
+.env.backup
+.env.local
+.env.*.local
+.env.production
+/auth.json
+
+# 依存関係・ビルド成果物
+/vendor
+/node_modules
+/public/build
+/public/hot
+/public/storage
+
+# ストレージ（鍵・ローカル状態）
+/storage/*.key
+/storage/pail
+
+# テスト・カバレッジ成果物
+.phpunit.result.cache
+.phpunit.cache
+/coverage
+/.phpunit.cache
+
+# IDE・エディタ（ローカル設定）
+/.fleet
+/.idea
+/.nova
+/.vscode
+/.zed
+.phpactor.json
+
+# OS
+.DS_Store
+Thumbs.db
+*.log
+
+# ローカル開発用
+Homestead.json
+Homestead.yaml
+npm-debug.log*
+.yarn-integrity

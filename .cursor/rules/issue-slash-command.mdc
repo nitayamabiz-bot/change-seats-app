@@ -1,0 +1,12 @@
+---
+description: Issue 着手は .cursor/commands の issue-work を / から選択して呼び出す
+alwaysApply: false
+---
+
+# Issue 着手コマンド
+
+Issue に着手するときは、**Cursor のチャットで `/` を入力し、`.cursor/commands/` 配下の **issue-work** を選択する。**
+
+- コマンドファイル: `.cursor/commands/issue-work.md`
+- 選択すると、そのファイルの内容がチャットに挿入され、その指示に従ってブランチ作成〜テストシナリオ〜Canon TDD サイクル〜PR まで進める。
+- メッセージに Issue 番号（例: 1 または Issue 1）を書く。書いていなければエージェントが番号を聞く。

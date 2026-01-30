@@ -1,0 +1,29 @@
+---
+description: Canon TDD（テスト駆動開発）のワークフローとコマンド
+alwaysApply: true
+---
+
+# Canon TDD ワークフロー（change-seats-app）
+
+**Canon TDD の理論にのみ従う。独自の手順は追加しない。**
+
+## Canon TDD の流れ
+
+1. **設計から開発プロセスを作成する際に、テストシナリオを作成する**
+2. **テスト実行して失敗**（コードがないため）
+3. **コードを作成する**
+4. **１個だけテストを実施**し、通ることを確認する
+5. **通れば**、テスト結果が変わらないことを前提に **可能な限りリファクタリング** する
+6. 次のシナリオへ（2〜5 を繰り返す）
+7. **全てのテストシナリオが終われば完了**
+
+詳細は [docs/CANON_TDD_PROCESS.md](docs/CANON_TDD_PROCESS.md) を参照。
+
+## コマンド
+
+| 目的 | コマンド |
+|------|----------|
+| テスト実行（Red 確認・最終確認） | `composer test` |
+| **１個だけ**テスト実施（Green・Refactor 後確認） | `php artisan test --filter=メソッド名` または `composer test:one -- フィルタ` |
+| スタイル整形 | `composer pint` |
+| スタイルチェック | `composer pint:test` |

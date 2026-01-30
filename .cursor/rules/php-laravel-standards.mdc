@@ -1,0 +1,47 @@
+---
+description: PHP / Laravel のコーディング規約
+globs: "**/*.php"
+alwaysApply: false
+---
+
+# PHP / Laravel コーディング規約
+
+## 基本
+
+- PSR-12 に準拠。整形は **Laravel Pint** を使用（`composer pint`）
+- 型宣言を付ける（引数・戻り値・プロパティ）
+- 1クラス1ファイル。クラス名とファイル名は一致させる
+
+## Laravel の慣習
+
+- コントローラは「スリム」に。ビジネスロジックは Service / Action クラスへ
+- モデルは Eloquent の規約に従う（複数形テーブル名、`$fillable` / `$guarded`）
+- ルートは `routes/web.php` または `routes/api.php`。名前付きルートを使う
+- 設定は `config/`。`.env` で環境ごとに切り替える
+- 日本語コメント・コミットメッセージは可。コード内コメントは必要最小限で具体的に
+
+## テスト
+
+- テストメソッド名は「何を・どうすると・どうなる」が分かるように（英語可）
+- Feature テストでは `get()` / `post()` のあと `assertStatus()` や `assertSee()` を書く
+- データベースはテストでは SQLite メモリ（`phpunit.xml` で設定済み）を使用
+
+## 例（避ける / 推奨）
+
+```php
+// ❌ コントローラにロジックを詰め込む
+public function store(Request $request) {
+    if ($request->user()->cannot('create', Post::class)) { ... }
+    $validated = $request->validate([...]);
+    $post = new Post($validated);
+    $post->user_id = $request->user()->id;
+    $post->save();
+    return redirect()->route('posts.show', $post);
+}
+
+// ✅ アクションに委譲
+public function store(StorePostRequest $request, CreatePostAction $action) {
+    $post = $action->run($request->user(), $request->validated());
+    return redirect()->route('posts.show', $post);
+}
+```
