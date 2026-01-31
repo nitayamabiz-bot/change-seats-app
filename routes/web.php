@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return auth()->check() ? redirect('/home') : redirect('/login');
+    return auth()->check() ? redirect('/home') : app(AuthenticatedSessionController::class)->create();
 });
 
 Route::get('/home', function () {
