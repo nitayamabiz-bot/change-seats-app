@@ -1,80 +1,35 @@
-# Issue に着手する（Canon TDD）
+# Issue 作業の流れ（索引）
 
-GitHub Issue 番号をこのメッセージに書いてください（例: 1 または Issue 1）。指定がなければ番号を聞く。
-
-指定された Issue（N）について、次の流れで進める。
+Issue 単位の作業は **3 つのコマンド** に分かれている。`/` から該当コマンドを選んで使う。
 
 ---
 
-## 1. ブランチ
+## どの Issue の作業中か（判別のしかた）
 
-- `issue/N` ブランチを作成またはチェックアウトする（`git checkout -b issue/N` など）。
+| タイミング | 判別方法 |
+|------------|----------|
+| **issue-start を実行するとき** | メッセージに書いた **Issue 番号**（例: 1 または Issue 1）を使う。 |
+| **issue-fix / issue-ship を実行するとき** | **現在のブランチ名** で判別する。`issue/N` なら Issue #N の作業中とみなす。 |
 
----
-
-## 2. Implementation: Canon TDD（Kent Beck）
-
-実装タスクは Kent Beck の Canon TDD に従う。
-
-### TDD Cycle（厳守）
-
-```
-🔴 RED → 🟢 GREEN → 🔵 BLUE → Repeat
-```
-
-| Phase | Action | Rule |
-|-------|--------|------|
-| 🔴 RED | テストを書く | 実装コードより先にテストを書く。テストは失敗すること |
-| 🟢 GREEN | 実装を書く | テストを通す最小限のコードのみ |
-| 🔵 BLUE | リファクタリング | テストを GREEN に保ちながら改善 |
-
-### Two Hats Rule（Kent Beck）
-
-```
-🎩 HAT 1 (GREEN): Make it work - 動くコードを書く
-🎩 HAT 2 (BLUE):  Make it right - 構造を改善する
-
-⚠️ 2つの帽子を同時にかぶらない
-```
-
-### Implementation Flow
-
-1. **Test List 作成**: 実装前に振る舞いシナリオをリスト化する
-   - Happy path（正常系）
-   - Edge cases（境界値）
-   - Error cases（異常系）
-   - その Issue の内容と docs/TECHNICAL_DESIGN.md から導く。1 シナリオ＝1 テストメソッド。
-
-2. **One Test at a Time**: リストから 1 つずつ「テスト → 実装 → リファクタリング」を回す。
-   - そのシナリオのテストを 1 つ書く（🔴 RED）
-   - `composer test` で失敗を確認する
-   - その 1 個が通る最小限のコードを書く（🟢 GREEN）
-   - `php artisan test --filter=メソッド名` で **１個だけ** テストを実施し、通ることを確認する
-   - テストを GREEN に保ちながらリファクタリングする（🔵 BLUE）。同じ 1 個のテストで再確認する
-   - 次のシナリオへ
-
-3. **Checkpoint**: 各フェーズ完了時に状態を報告する
-   - `🔴 RED: [behavior] test fails as expected`
-   - `🟢 GREEN: [behavior] implemented and test passes`
-   - `🔵 BLUE: Refactoring complete, tests remain GREEN`
+→ 必ず **Issue 用ブランチ（issue/N）にいる状態** で issue-fix / issue-ship を実行すること。ブランチが違う場合は先に `git checkout issue/N` する。
 
 ---
 
-## 3. 完了後
+## コマンド一覧
 
-- 全シナリオが GREEN になったら: `composer test` で全体確認 → `composer pint` → 変更をコミット・プッシュ → PR 作成（`gh pr create` または手順を案内）。
+| コマンド | 役割 |
+|----------|------|
+| **issue-start** | Issue 番号を指定して着手。ブランチ作成 → テストシナリオ作成 → Canon TDD サイクル。**目視確認の手前まで**。 |
+| **issue-fix** | 目視確認で不具合が出たとき。不具合をテストケースに追加し、TDD サイクルで直す。**現在ブランチが issue/N であること**を前提にする。 |
+| **issue-ship** | 目視まで問題なければ。全体テスト・pint → コミット・プッシュ → **PR 作成**。**現在ブランチが issue/N であること**を前提にする。 |
 
 ---
 
-## ルール
+## 推奨フロー
 
-- Kent Beck の Canon TDD にのみ従う。独自の手順は追加しない。
-- 1 回に通すテストは **１個だけ**。GREEN・BLUE 後の確認もその 1 個だけ実行する。
-- 2 つの帽子を同時にかぶらない（GREEN で「動かす」、BLUE で「きれいにする」を分ける）。
+1. `/issue-start` ＋ Issue 番号（例: `2`）→ ブランチ・Test List・TDD まで実施
+2. **目視で動作確認**
+3. 問題あり → `/issue-fix`（ブランチはそのまま）→ 追加テスト・TDD → 必要なら 2 に戻る
+4. 問題なし → `/issue-ship`（ブランチはそのまま）→ コミット・プッシュ・PR
 
-## コマンド
-
-- 🔴 RED 確認: `composer test`
-- 🟢 GREEN・🔵 BLUE 後（１個だけ）: `php artisan test --filter=メソッド名`
-- 完了確認: `composer test`
-- スタイル: `composer pint`
+詳細は各コマンドファイル（issue-start.md / issue-fix.md / issue-ship.md）を参照。

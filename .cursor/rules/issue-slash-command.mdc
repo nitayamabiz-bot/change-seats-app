@@ -1,12 +1,17 @@
 ---
-description: Issue 着手は .cursor/commands の issue-work を / から選択して呼び出す
+description: Issue 作業は issue-start / issue-fix / issue-ship の 3 コマンドに分割。issue-work は索引。
 alwaysApply: false
 ---
 
-# Issue 着手コマンド
+# Issue 作業コマンド（3 分割）
 
-Issue に着手するときは、**Cursor のチャットで `/` を入力し、`.cursor/commands/` 配下の **issue-work** を選択する。**
+Issue 単位の作業は **3 つのコマンド** に分かれている。Cursor のチャットで `/` を入力し、一覧から該当コマンドを選択する。
 
-- コマンドファイル: `.cursor/commands/issue-work.md`
-- 選択すると、そのファイルの内容がチャットに挿入され、その指示に従ってブランチ作成〜テストシナリオ〜Canon TDD サイクル〜PR まで進める。
-- メッセージに Issue 番号（例: 1 または Issue 1）を書く。書いていなければエージェントが番号を聞く。
+| コマンド | 役割 |
+|----------|------|
+| **issue-start** | Issue 番号を指定して着手。ブランチ・Test List・TDD まで（目視確認の手前で終了）。 |
+| **issue-fix** | 目視確認で不具合が出たとき。不具合をテストに追加して TDD で直す。**現在ブランチが issue/N であること**を前提にする。 |
+| **issue-ship** | 完了処理。全体テスト・pint・コミット・プッシュ・PR 作成。**現在ブランチが issue/N であること**を前提にする。 |
+
+- **どの Issue か**: issue-start ではメッセージに書いた Issue 番号を使う。issue-fix / issue-ship では **現在のブランチ名（issue/N）** から判別する。
+- 索引: `.cursor/commands/issue-work.md` に 3 コマンドの流れと判別ルールをまとめている。
