@@ -10,12 +10,33 @@ class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** Issue 1 #1: ゲストが / にアクセスするとログインへリダイレクトされる */
-    public function test_guest_visiting_root_is_redirected_to_login(): void
+    /** Issue 1 #1: ゲストが / にアクセス → Issue 2 で / がログイン画面のため、test_guest_sees_login_form_at_root に統合 */
+
+    /** Issue 2 #1: ゲストが / にアクセスするとログインフォームが表示される（200） */
+    public function test_guest_sees_login_form_at_root(): void
     {
         $response = $this->get('/');
 
-        $response->assertRedirect('/login');
+        $response->assertStatus(200);
+    }
+
+    /** Issue 2 #2: / で表示されるページにメール・パスワード入力がある */
+    public function test_root_page_has_email_and_password_inputs(): void
+    {
+        $response = $this->get('/');
+
+        $response->assertStatus(200);
+        $response->assertSee('email', false);
+        $response->assertSee('password', false);
+    }
+
+    /** Issue 2 #3: / で表示されるページに会員登録ページへのリンクがある */
+    public function test_root_page_has_link_to_register(): void
+    {
+        $response = $this->get('/');
+
+        $response->assertStatus(200);
+        $response->assertSee(route('register'), false);
     }
 
     /** Issue 1 #2: ゲストが /login でログインフォームが見える（200） */
