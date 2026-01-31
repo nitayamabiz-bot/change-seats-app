@@ -77,6 +77,7 @@
 ## 4. ここまでで終了
 
 - **全シナリオが GREEN になったらこのコマンドは終了。**
+- **issue-start では全体テスト（composer test）は実行しない。** その Issue のシナリオを 1 個ずつ GREEN にした時点で終了。全体確認は **issue-ship** で行い、**PR では CI** が全体テストを実行する。テストが増えても issue-start はその Issue 分だけの確認でよい。
 - 次は **目視で動作確認** する。問題があれば **issue-fix** で不具合をテストに追加して TDD を回す。問題なければ **issue-ship** でコミット・プッシュ・PR まで進める。
 
 ---
@@ -84,6 +85,6 @@
 ## ルール・コマンド
 
 - Kent Beck の Canon TDD にのみ従う。1 回に通すテストは **１個だけ**。
-- 🔴 RED 確認: `composer test`
+- 🔴 RED 確認: `composer test`（その 1 個のテストが失敗することを確認するときだけ）
 - 🟢 GREEN・🔵 BLUE 後（１個だけ）: `php artisan test --filter=メソッド名`
-- スタイル: `composer pint`
+- スタイル: `composer pint`（必要なら。全体は issue-ship で）
