@@ -14,7 +14,7 @@
 ## 流れ
 
 1. **現在ブランチを確認**: `issue/N` であることを確認する。
-2. **全体テスト**: `composer test` で全テストが通ることを確認する。
+2. **全体テスト**: `composer test` で全テストが通ることを確認する。（issue-start では実行しない。ここと PR の CI で行う。）
 3. **スタイル**: `composer pint` で整形し、必要なら `composer pint:test` でチェック。
 4. **コミット**: 変更をコミットする（メッセージに Issue 番号を含めるとよい。例: `fix: Issue #N 〇〇`）。
 5. **プッシュ**: `git push -u origin issue/N`（未プッシュの場合）または `git push`。
